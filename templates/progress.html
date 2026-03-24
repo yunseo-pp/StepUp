@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<a href="/goals">← 뒤로가기</a>
+
+<h1>{{ goal.title }}</h1>
+
+<h3>진행률: {{ percent }}%</h3>
+<progress value="{{ percent }}" max="100"></progress>
+
+<hr>
+
+<h3>세부 계획 추가</h3>
+
+<form method="POST" action="/add_plan/{{ goal_id }}">
+    <input type="text" name="title" placeholder="계획 제목" required>
+
+    <select name="type" id="typeSelect">
+        <option value="count">횟수</option>
+        <option value="number">수치</option>
+        <option value="time">시간</option>
+        <option value="calendar">캘린더</option>
+        <option value="check">체크</option>
+    </select>
+
+    <!-- 일반 목표값 -->
+    <input type="number" id="targetInput" name="target" placeholder="목표값">
+
+    <!-- 수치형 옵션 -->
+    <div id="numberOptions">
+        <input type="number" name="start" placeholder="시작값">
+        <input type="number" name="target" placeholder="목표값">
+        <select name="direction">
+            <option value="up">증가</option>
+            <option value="down">감소</option>
+        </select>
+    </div>
+
+    <button>추가</button>
+</form>
+
+<hr>
+
+{% for plan in goal.plans %}
+    {% set plan_index = loop.index0 %}
+
+    <div>
+        <b>{{ plan.title }}</b>
+
+        {% if plan.type == 'count' or plan.type == 'time' %}
+            <p>{{ plan.current }} / {{ plan.target }}</p>
+            <form method="POST" action="/update/{{ goal_id }}/{{ plan_index }}">
+                <input type="number" name="value">
+                <button>기록</button>
+            </form>
+
+        {% elif plan.type == 'number' %}
+            <p>{{ plan.current }} → {{ plan.target }}</p>
+            <form method="POST" action="/update/{{ goal_id }}/{{ plan_index }}">
+                <input type="number" name="value">
+                <button>변경</button>
+            </form>
+
+        {% elif plan.type == 'check' %}
+            <a href="/check/{{ goal_id }}/{{ plan_index }}">
+                {% if plan.done %}✔ 완료{% else %}체크하기{% endif %}
+            </a>
+
+        {% elif plan.type == 'calendar' %}
+
+            <div>
+                <a href="/progress/{{ goal_id }}?year={{ year }}&month={{ month-1 }}">◀</a>
+                {{ year }}년 {{ month }}월
+                <a href="/progress/{{ goal_id }}?year={{ year }}&month={{ month+1 }}">▶</a>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);">
+                <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+
+                {% for week in calendar_data %}
+                    {% for day in week %}
+                        {% if day == 0 %}
+                            <div></div>
+                        {% else %}
+                            <a href="/calendar/{{ goal_id }}/{{ plan_index }}/{{ year }}-{{ month }}-{{ day }}">
+                                {{ day }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    </div>
+
+    <hr>
+{% endfor %}
+
+<script>
+const typeSelect = document.getElementById("typeSelect");
+const targetInput = document.getElementById("targetInput");
+const numberOptions = document.getElementById("numberOptions");
+
+function toggleTarget() {
+    const type = typeSelect.value;
+
+    if (type === "count" || type === "time") {
+        targetInput.style.display = "inline-block";
+        numberOptions.style.display = "none";
+    } 
+    else if (type === "number") {
+        targetInput.style.display = "none";
+        numberOptions.style.display = "block";
+    }
+    else {
+        targetInput.style.display = "none";
+        numberOptions.style.display = "none";
+    }
+}
+
+toggleTarget();
+typeSelect.addEventListener("change", toggleTarget);
+</script>
+
+</body>
+</html>

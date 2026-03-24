@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <h2>목표 목록</h2>
+
+    <form method="POST" action="/goals">
+        <input type="text" name="goal" placeholder="목표 입력" required>
+        <button>추가</button>
+    </form>
+
+    <hr>
+
+    {% for goal in goals %}
+    <div class="card">
+        <h3>{{ goal.title }}</h3>
+        <a href="/progress/{{ loop.index0 }}">들어가기</a>
+    </div>
+    {% endfor %}
+
+</body>
+
+</html>

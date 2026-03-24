@@ -1,0 +1,93 @@
+body {
+    background: #111;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+.container {
+    margin-top: 80px;
+}
+
+.card {
+    background: #222;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px;
+}
+
+input,
+select {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    padding: 10px 20px;
+    background: #ff5a5a;
+    border: none;
+    border-radius: 10px;
+    color: white;
+}
+
+progress {
+    width: 100%;
+}
+
+/* 뒤로가기 버튼 */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #333;
+    padding: 8px 15px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background: #555;
+}
+
+/* 달력 */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    padding: 10px;
+    background: #333;
+    border-radius: 8px;
+}
+
+.day.header {
+    background: none;
+    font-weight: bold;
+}
+
+.day.empty {
+    background: transparent;
+}
+
+.day.checked {
+    background: #4CAF50;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.calendar-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}

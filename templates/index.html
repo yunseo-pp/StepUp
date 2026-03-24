@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>🚀 StepUp</h1>
+
+        <form method="POST" action="/">
+            <input type="text" name="title" placeholder="목표 입력" required>
+            <button type="submit">시작</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
